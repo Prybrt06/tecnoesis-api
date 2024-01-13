@@ -12,6 +12,12 @@ router.post(
   Controllers.Event.addOrganizer
 );
 
+router.post(
+  "/add/manager/:eventId",
+  Middlewares.Auth.isAdmin,
+  Controllers.Event.addManager
+);
+
 router.get("/:eventId", Controllers.Event.getEventById);
 router.get("/", Controllers.Event.getAllEvents);
 router.patch(
