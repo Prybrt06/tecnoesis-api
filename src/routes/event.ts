@@ -6,6 +6,12 @@ const router: Router = Router({ mergeParams: true });
 
 router.post("/create", Middlewares.Auth.isAdmin, Controllers.Event.createEvent);
 
+router.post(
+  "/add/organiser/:eventId",
+  Middlewares.Auth.isAdmin,
+  Controllers.Event.addOrganizer
+);
+
 router.get("/:eventId", Controllers.Event.getEventById);
 router.get("/", Controllers.Event.getAllEvents);
 router.patch(

@@ -45,6 +45,8 @@ model EventManager {
 
   eventId String @db.ObjectId
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
 }
 
 model EventOrganiser {
@@ -55,6 +57,8 @@ model EventOrganiser {
 
   eventId String @db.ObjectId
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
 }
 
 model Team {
