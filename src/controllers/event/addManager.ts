@@ -43,7 +43,9 @@ const addManager: Interfaces.Controller.Async = async (req, res, next) => {
           update: {},
         });
 
-        eventManagers.push(eventmanager);
+        if (eventmanager) {
+          eventManagers.push(eventmanager);
+        }
       })
     );
 
