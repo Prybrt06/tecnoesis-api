@@ -128,6 +128,18 @@ const createEvent: Interfaces.Controller.Async = async (req, res, next) => {
     }
   }
 
+  const connectOrganiser = organizers.map((id) => {
+    return {
+      userId: id,
+    };
+  });
+
+  const connectManager = managers.map((id) => {
+    return {
+      userId: id,
+    };
+  });
+
   const event = await prisma.event.create({
     data: {
       description,
@@ -148,40 +160,14 @@ const createEvent: Interfaces.Controller.Async = async (req, res, next) => {
       module: {
         connect: { id: moduleId },
       },
+      organizers: {
+        create: connectOrganiser,
+      },
+      managers: {
+        create: connectManager,
+      },
     },
   });
-
-  if (organizers) {
-    try {
-      organizers?.map(async (id: any) => {
-        await prisma.eventOrganiser.create({
-          data: {
-            userId: id,
-            eventId: event.id,
-          },
-        });
-      });
-    } catch (e) {
-      await prisma.event.delete({ where: { id: event.id } });
-      return next(Errors.Event.unableToCreate);
-    }
-  }
-
-  if (managers) {
-    try {
-      managers?.map(async (id: any) => {
-        await prisma.eventManager.create({
-          data: {
-            userId: id,
-            eventId: event.id,
-          },
-        });
-      });
-    } catch (e) {
-      await prisma.event.delete({ where: { id: event.id } });
-      return next(Errors.Event.unableToCreate);
-    }
-  }
 
   if (!event) return next(Errors.System.serverError);
   return res.json(Utils.Response.Success(event));
