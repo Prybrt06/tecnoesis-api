@@ -4,7 +4,11 @@ import * as Middlewares from "@middlewares";
 
 const router: Router = Router({ mergeParams: true });
 
-router.post("/create", Middlewares.Auth.isAdmin, Controllers.Event.createEvent);
+router.post(
+  "/create",
+  Middlewares.Auth.isOrganizerOrAdmin,
+  Controllers.Event.createEvent
+);
 
 router.post(
   "/add/organiser/:eventId",
@@ -14,7 +18,7 @@ router.post(
 
 router.post(
   "/add/manager/:eventId",
-  Middlewares.Auth.isAdmin,
+  Middlewares.Auth.isOrganizerOrAdmin,
   Controllers.Event.addManager
 );
 
@@ -22,12 +26,12 @@ router.get("/:eventId", Controllers.Event.getEventById);
 router.get("/", Controllers.Event.getAllEvents);
 router.patch(
   "/:eventId/",
-  Middlewares.Auth.isAdmin,
+  Middlewares.Auth.isOrganizerOrAdmin,
   Controllers.Event.updateEvent
 );
 router.delete(
   "/:eventId/",
-  Middlewares.Auth.isAdmin,
+  Middlewares.Auth.isOrganizerOrAdmin,
   Controllers.Event.deleteEvent
 );
 

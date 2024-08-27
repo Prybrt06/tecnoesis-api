@@ -161,6 +161,8 @@ const isAdmin: Interfaces.Middleware.Async = async (req, _res, next) => {
     },
   });
 
+  console.log(admin);
+
   if (admin && admin.firebaseId === process.env.ADMIN_ID!) {
     return next();
   } else {
